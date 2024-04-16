@@ -36,6 +36,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { useRouter } from "next/navigation";
+
 export type Repository = {
   id: number;
   name: string;
@@ -135,7 +137,8 @@ export const columns: ColumnDef<Repository>[] = [
 ];
 
 export function RepoTable({ Repos }: { Repos: Repository[] }) {
-  console.log(Repos);
+  const router = useRouter();
+
   //TODO: Fix table border like trade-ease, Update lastUpdated Format, Handle no descriptions
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -164,6 +167,25 @@ export function RepoTable({ Repos }: { Repos: Repository[] }) {
       rowSelection,
     },
   });
+
+  // Getting Selected Rows Data
+  const filteredSelectedRows = table.getFilteredSelectedRowModel().rows;
+  const extractedProperties = filteredSelectedRows.map((row) => {
+    const { id, url } = row.original;
+    return { id, url };
+  });
+
+  const handleRepoToMigrate = () => {
+    // Save Repos To Migrate to session storage
+    sessionStorage.setItem(
+      "selectedRepos",
+      JSON.stringify(extractedProperties)
+    );
+
+    router.push("/migration");
+  };
+
+  console.log(extractedProperties);
 
   return (
     <div className="w-full">
@@ -276,6 +298,9 @@ export function RepoTable({ Repos }: { Repos: Repository[] }) {
             Next
           </Button>
         </div>
+      </div>
+      <div className="text-center">
+        <Button onClick={handleRepoToMigrate}>Migrate</Button>
       </div>
     </div>
   );
