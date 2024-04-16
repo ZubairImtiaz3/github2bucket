@@ -8,13 +8,16 @@ export default function AuthComponent() {
   async function signInWithGithub() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "github",
+
+      //TODO: fix redirectTo for prod
+      options: {
+        redirectTo: "http://localhost:3000/auth/callback",
+      },
     });
-    console.log("dataLogin", data);
   }
 
   async function logOut() {
     const { error } = await supabase.auth.signOut();
-    console.log("error logout", error);
   }
 
   return (
