@@ -11,7 +11,7 @@ export default function AuthComponent() {
 
       //TODO: fix redirectTo for prod
       options: {
-        redirectTo: "http://localhost:3000/auth/callback",
+        redirectTo: "http://localhost:3000/auth/github",
       },
     });
   }
