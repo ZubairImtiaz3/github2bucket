@@ -5,7 +5,7 @@ export async function fetchRepositories(token: string) {
   try {
     const response = await axios.get("https://api.github.com/user/repos", {
       headers: {
-        Authorization: `bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -22,6 +22,31 @@ export async function fetchRepositories(token: string) {
     return Repos;
   } catch (error) {
     console.error("Error fetching repositories:", error);
+    throw error;
+  }
+}
+
+export async function fetchWorkspaces(token: string) {
+  try {
+    const response = await axios.get(
+      "https://api.bitbucket.org/2.0/workspaces",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    // Extracting only the required data
+    const Workspaces = response.data.values.map((workspace: any) => ({
+      name: workspace.name,
+      repositories: workspace.links.repositories.href,
+      projects: workspace.links.projects.href,
+    }));
+
+    return Workspaces;
+  } catch (error) {
+    console.error("Error fetching workspaces:", error);
     throw error;
   }
 }
