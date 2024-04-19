@@ -12,6 +12,8 @@ const page = async () => {
   // Extracting provider_token from the session
   const providerToken = data.session?.provider_token || "";
 
+  console.log(data);
+
   // Fetching repositories from GitHub
   const Repos = await fetchRepositories(providerToken);
 

@@ -50,3 +50,26 @@ export async function fetchWorkspaces(token: string) {
     throw error;
   }
 }
+
+export async function fetchWorkspaceProjects(token: string, workspaceName: string) {
+  try {
+    const response = await axios.get(
+      `https://api.bitbucket.org/2.0/workspaces/${workspaceName}/projects`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    // Extracting only the required data
+    const WorkspaceProjects = response.data.values.map((projects: any) => ({
+      name: projects.name,
+    }));
+
+    return WorkspaceProjects;
+  } catch (error) {
+    console.error("Error fetching workspaces:", error);
+    throw error;
+  }
+}

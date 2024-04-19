@@ -2,7 +2,10 @@
 // get repoToMigrate from session and post api to migrate the repo
 
 import BitBucketAuth from "@/components/BitBucketAuth";
-import { fetchWorkspaces } from "@/utils/client/basicUtlis";
+import {
+  fetchWorkspaceProjects,
+  fetchWorkspaces,
+} from "@/utils/client/basicUtlis";
 import { createClient } from "@/utils/supabase/server";
 
 const page = async () => {
@@ -16,9 +19,19 @@ const page = async () => {
   const providerToken = data.session?.provider_token || "";
 
   console.log("provider token", providerToken);
+  console.log(data);
 
-  // const Workspaces = await fetchWorkspaces(providerToken);
-  // console.log("workspaces", Workspaces);
+  const Workspaces = await fetchWorkspaces(providerToken);
+  console.log("workspaces", Workspaces);
+
+  const selectedWorkspace = Workspaces[0].name;
+
+  const workspacesProjects = await fetchWorkspaceProjects(
+    providerToken,
+    selectedWorkspace
+  );
+
+  console.log("workspacesProjects", workspacesProjects);
 
   return (
     <>
