@@ -17,26 +17,11 @@ const page = async () => {
 
   // Extracting provider_token from the session
   const providerToken = data.session?.provider_token || "";
-
-  console.log("provider token", providerToken);
-  console.log(data);
-
-  const Workspaces = await fetchWorkspaces(providerToken);
-  console.log("workspaces", Workspaces);
-
-  const selectedWorkspace = Workspaces[0].name;
-
-  const workspacesProjects = await fetchWorkspaceProjects(
-    providerToken,
-    selectedWorkspace
-  );
-
-  console.log("workspacesProjects", workspacesProjects);
-
+  
   return (
     <>
       <div className="text-center p-12">
-        <BitBucketAuth />
+        <BitBucketAuth providerToken={providerToken} />
       </div>
     </>
   );
